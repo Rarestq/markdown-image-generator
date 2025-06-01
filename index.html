@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown转精美图片生成器</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;700&family=Dancing+Script:wght@400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="control-panel">
+            <h1><i class="fas fa-image"></i> Markdown转精美图片生成器</h1>
+            
+            <div class="input-group">
+                <label for="text-input"><i class="fas fa-font"></i> 输入文本 (支持Markdown)</label>
+                <textarea id="text-input" placeholder="输入您想转换成图片的文本（支持Markdown格式）...">- 🧠*Be the one who you needed when you were younger.*
+- 🌎**不要忽视梦想。不要工作过久。说出想法。交朋友。 要开心。**
+- [GitHub](https://github.com/Rarestq)</textarea>
+            </div>
+            
+            <div class="input-group">
+                <label for="author-input"><i class="fas fa-user"></i> 作者署名</label>
+                <input type="text" id="author-input" placeholder="输入作者名字，例如：@tibidabo" value="@tibidabo">
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <i class="fas fa-text-height"></i>
+                    <span>字数：<span id="char-count">0</span></span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-ruler-combined"></i>
+                    <span>尺寸：9:16</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-image"></i>
+                    <span>分辨率：720x1280</span>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="font-select"><i class="fas fa-text-width"></i> 选择字体</label>
+                <select id="font-select">
+                    <option value="'Roboto', sans-serif">无衬线体 - 现代简约</option>
+                    <option value="'Playfair Display', serif">衬线体 - 优雅经典</option>
+                    <option value="'Dancing Script', cursive">连笔字 - 手写风格</option>
+                    <option value="'Merriweather', serif">衬线体 - 正式传统</option>
+                    <option value="'Montserrat', sans-serif">无衬线体 - 时尚大气</option>
+                    <option value="'Pacifico', cursive">连笔字 - 趣味活泼</option>
+                </select>
+                <div class="font-example" id="font-example">当前字体效果预览</div>
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-text-height"></i> 字体大小</label>
+                <div class="slider-container">
+                    <input type="range" id="font-size" min="14" max="60" value="24">
+                    <span class="size-value" id="size-value">24px</span>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-paint-brush"></i> 文字样式</label>
+                <div class="style-options">
+                    <div class="style-option active" data-style="normal">
+                        <i class="fas fa-text"></i> 常规
+                    </div>
+                    <div class="style-option" data-style="italic">
+                        <i class="fas fa-italic"></i> 斜体
+                    </div>
+                    <div class="style-option" data-style="bold">
+                        <i class="fas fa-bold"></i> 粗体
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="text-color"><i class="fas fa-palette"></i> 文字颜色</label>
+                <input type="color" id="text-color" value="#333333">
+            </div>
+            
+            <div class="input-group">
+                <label><i class="fas fa-image"></i> 背景风格</label>
+                <div class="background-options">
+                    <div class="bg-option active" style="background: linear-gradient(45deg, #ffffff, #f9f9f9);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #fff1eb, #ace0f9);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #d9afd9, #97d9e1);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #a1c4fd, #c2e9fb);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #fdfcfb, #e2d1c3);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #e0c3fc, #8ec5fc);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #f6d365, #fda085);"></div>
+                    <div class="bg-option" style="background: linear-gradient(45deg, #a8edea, #fed6e3);"></div>
+                </div>
+            </div>
+            
+            <div class="markdown-help">
+                <h4><i class="fas fa-info-circle"></i> Markdown 快速参考</h4>
+                <ul>
+                    <li><code>**粗体**</code> → <strong>粗体</strong></li>
+                    <li><code>*斜体*</code> → <em>斜体</em></li>
+                    <li><code># 标题</code> → 大标题</li>
+                    <li><code>1. 列表项</code> → 有序列表</li>
+                    <li><code>- 列表项</code> → 无序列表</li>
+                    <li><code>[链接](http://example.com)</code> → 可点击链接</li>
+                </ul>
+            </div>
+            
+            <button id="generate-btn" class="btn">
+                <i class="fas fa-magic"></i> 生成精美图片
+            </button>
+        </div>
+        
+        <div class="preview-panel">
+            <h2>图片预览 (9:16)</h2>
+            <div class="preview-container">
+                <div class="preview-content" id="preview-content">
+                    <div class="preview-text" id="preview-text">- 🧠*Be the one who you needed when you were younger.*
+- 🌎**不要忽视梦想。不要工作过久。说出想法。交朋友。 要开心。**
+- [Tibidabo](https://github.com/Rarestq)</div>
+                    
+                    <div class="author-signature" id="author-signature">@tibidabo</div>
+                    <div class="word-count" id="word-count">字数：0</div>
+                </div>
+            </div>
+            
+            <button id="download-btn" class="btn btn-download">
+                <i class="fas fa-download"></i> 下载图片
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
